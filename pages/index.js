@@ -299,7 +299,7 @@ export default function Home() {
           </li>
         </ul>
         <div class="flex justify-center text-sm text-slate-400">
-          FLUI Antofagasta®, todos los derechos reservado | flui.empresa@gmail.com | +56990786511  
+          FLUI Antofagasta®, todos los derechos reservado | flui.empresa@gmail.com  
         </div>
       </div>
         
