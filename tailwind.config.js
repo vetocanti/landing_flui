@@ -10,7 +10,8 @@ module.exports = {
     extend: {
       colors: {
         primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#d868c8","800":"#B0177F","900":"#1e3a8a","1000":"#c5eaff"},
-        alpha: {"sky":"rgba(197,234,255,0.5)"}
+        alpha: {"sky":"rgba(197,234,255,0.5)"},
+        backblue:{"bblue": "#0f172a"}
       }
     },
   },
