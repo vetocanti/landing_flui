@@ -239,7 +239,7 @@ export default function Home() {
                           </p>
                           <br/>
                           <a href="https://docs.google.com/forms/d/e/1FAIpQLSdroClVhoXoA4liL6LY3OW823-a2trURDyyuA25INRd7Gl6Kw/viewform?usp=sf_link"class="flex justify-center">                         
-                           <button class="py-2 pr-4 pl-3 text-center border-b border-gray-100 hover:bg-gray-50 dark:text-white dark:hover:bg-backblue-bblue dark:bg-primary-700 dark:hover:text-white dark:border-gray-700">
+                           <button class="py-2 pr-4 pl-3 text-center border-b border-gray-100 bg-primary-700 hover:bg-alpha-sky dark:text-white dark:hover:bg-backblue-bblue dark:bg-primary-700 dark:hover:text-white dark:border-gray-700">
                               Empezar
                           </button>
                           </a>
