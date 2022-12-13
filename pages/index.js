@@ -73,7 +73,7 @@ export default function Home() {
                     <img class="h-15 w- sm:items-center h-40 w-full " src="/caract2.svg" alt="Sunset in the mountains"/>
                     <div class="px-6 py-4">
                       <div class="  dark:text-primary-700 font-bold text-l sm:font-bold text-xl mb-2 text-center">Un organizador de eventos</div>
-                      <p class="  dark:text-primary-700 text-sm  sm:text-l text-center">Quien gestiona el el evento por ti, tu sólo debes elegir los productos y servicios que deseas en tu celebración</p>
+                      <p class="  dark:text-primary-700 text-sm  sm:text-l text-center">Que gestiona el evento por ti, tú solo debes elegir los productos y servicios que deseas en tu celebración.</p>
                     </div>
                   </div>
             </li>
