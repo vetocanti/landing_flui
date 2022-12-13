@@ -64,7 +64,7 @@ export default function Home() {
                     <img class=" h-15 w-full sm:items-center h-40 w-full" src="/caract1.svg" alt="Sunset in the mountains"/>
                     <div class="px-6 py-4">
                       <div class=" dark:text-primary-700 font-bold text-l sm:font-bold text-xl mb-2 text-center">Una Plataforma digital</div>
-                      <p class="  dark:text-primary-700 text-sm sm:text-l text-center">Simplifica tu experiencia al momento de organizar tus celebraciones. Puedes escontrar todos los servicios y productos que quieres para tu evento en un sólo lugar.</p>
+                      <p class="  dark:text-primary-700 text-sm sm:text-l text-center">Simplifica tu experiencia al momento de organizar tus celebraciones. Puedes encontrar todos los servicios y productos que quieres para tu evento en un sólo lugar.</p>
                     </div>
                   </div>
             </li>
