@@ -1,27 +1,80 @@
 import styles from '../styles/Home.module.css'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Register() {
 
     const [nombre,setNombre]= useState("");
     const [correoElectronico,setCorreoElectrico]= useState("");
     const [clave,setClave]= useState("");
+    const [selectedDate, setSelectedDate] = useState(null);
     
     const [nombreUsuario,setNombreUsuario]= useState("");
-    const [descripcion,setDescripcion] = useState("");
+    const [preferencia,setPreferencia] = useState("");
     const [foto, setFoto]= useState("");
+    const [rol, setRol] = useState("Usuario");
+    const [category, setCategory] = useState([]);
 
     const [errorMessage1, setErrorMessage1] = useState("");
     const [errorMessage2, setErrorMessage2] = useState("");
     const [errorMessage3, setErrorMessage3] = useState("");
     const [errorMessage4, setErrorMessage4] = useState("");
     const [errorMessage5, setErrorMessage5] = useState("");
+    
+    
 
-
+const CustomDatePickerInput = ({ value, onClick }) => (
+  <button class='block m-4 bg-white w-[232px] h-[48px] py-3 px-4 rounded' onClick={onClick}>
+    {value}
+  </button>
+);
+    let actualDate = new Date();
+    const years = range(1990, actualDate.getFullYear(), 1);
+    function range(start, end, step) {
+        const length = Math.floor(Math.abs((end - start) / step)) + 1;
+        return Array.from(Array(length), (x, index) => start + index * step);
+        }
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+    useEffect(() => {
+        async function getCategories() {
+            await fetch("http://localhost:3000/categories", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                setCategory(data);
+              });
+          }
+      
+          getCategories();
+        }, []);
     let errores = [];
-
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+      };
+    
+    const handlePreferenceChange = (e) => {
+        setPreferencia(e.target.value);
+    }
     function validateForm() {
 
         let formIsValid = true;
@@ -160,21 +213,30 @@ export default function Register() {
             body: formData
         }).then(response => response.body.pipeThrough(new TextDecoderStream()).getReader().read()).then(res=> res.value.toString());
        ;
+      
        console.log(url.length);
+       console.log(nombreUsuario);
+       console.log(selectedDate);
+       console.log(preferencia);
+       var selectElement = document.getElementById("mySelect");
+        selectElement.addEventListener("change", handlePreferenceChange);
             // enviar datos a la base de datos
-            await fetch("http://localhost:3000/companies/create", {
+            await fetch("http://localhost:3000/user/create", {
                 method:'POST',
                 headers: {'Content-Type': 'application/json',
                             'Accept': 'application/json'},
                 body:JSON.stringify({
                     "nombre":nombre,
-                    "nombreUsuario":nombreUsuario,
+                    "nombreusuario":nombreUsuario,
                     "clave":clave,
-                    "descripcion":descripcion,
-                    "correoElectronico":correoElectronico,
+                    "preferencias":selectElement.value,
+                    "fechadenacimiento": selectedDate,
+                    "email":correoElectronico,
                     "foto": url,
+                    "rol": rol,
+
                 })
-            }).then(response => JSON.stringify(response))
+            }).then(response => response.json())
             .then(data => console.log(data));
 
                 console.log("aqui")
@@ -186,7 +248,7 @@ export default function Register() {
                     icon:'success',
                     timer: 300000,
                     }).then( async function() {
-                        await window.location.replace('http://localhost:3002/login');
+                        await window.location.replace('http://localhost:3001/login');
                         console.log("fin");
                     })
         
@@ -233,7 +295,7 @@ export default function Register() {
 </header>
 <main >
         <h1  class=" text-5xl text-primary-800  text-center m-10">
-        Registro Empresa
+        Registrate aquí
         </h1>
         <div class="items-center bg-cover bg-alpha-sky w-full justify center p3 "> 
           <h2 id="inicio" class="text-2xl font-bold sm:font-bold text-4xl text-center p-3 text-primary-700"> Ingresa tus datos</h2>
@@ -254,7 +316,7 @@ export default function Register() {
             </input>
             {validateCorreoElectronico(correoElectronico) && <p>{validateCorreoElectronico(correoElectronico)}</p>}
             
-            <input class=" block form-input px-4 py-3 rounded m-4" placeholder="Contraseña" type="password" value={clave} onChange={(e)=>setClave(e.target.value)}>
+            <input class=" block form-input px-4 py-3 rounded- m-4" placeholder="Contraseña" type="password" value={clave} onChange={(e)=>setClave(e.target.value)}>
             </input>
             {validateClave(clave) && <p class="text-primary-800 ">{validateClave(clave)}</p>}
             <ul>
@@ -271,9 +333,88 @@ export default function Register() {
                     Al menos debe tener un caracter especial
                 </li>
             </ul>
-            <textarea class="block form-input px-4 py-3 rounded m-4" placeholder="Descripcion" value={descripcion} onChange={(e)=>setDescripcion(e.target.value)} > 
-            </textarea>
-           
+
+            <div>
+        <div class="m-2 pt-4">
+        <div class="my-4 text-center">Fecha de Nacimiento</div>
+        <DatePicker
+        className='datepicker-input'
+         captionLayout="dropdown-buttons" 
+         dateFormat={"dd/MM/yyyy"}
+         customInput={<CustomDatePickerInput />}
+         renderCustomHeader={({
+            date,
+            changeYear,
+            changeMonth,
+            decreaseMonth,
+            increaseMonth,
+            prevMonthButtonDisabled,
+            nextMonthButtonDisabled,
+          }) => (
+            <div
+              style={{
+                margin: 10,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <button class="m-1" onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                {"<"}
+              </button>
+              <select
+              class="m-1"
+                value={date.getFullYear()}
+                onChange={({ target: { value } }) => changeYear(value)}
+              >
+                {years.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+    
+              <select
+              class="m-1"
+                value={months[date.getMonth()]}
+                onChange={({ target: { value } }) =>
+                  changeMonth(months.indexOf(value))
+                }
+              >
+                {months.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+    
+              <button
+              class="m-1"
+              onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                {">"}
+              </button>
+            </div>
+          )}
+         selected={selectedDate} onChange={handleDateChange} />
+        </div>
+      
+    </div>
+            <label class="m-2">Categoria</label>
+            <select id="mySelect" class="text-center block m-4 bg-white w-[232px] h-[48px] py-3 px-4 rounded" value={preferencia} onChange={handlePreferenceChange}>
+              <option disabled selected>Seleccione una categoría</option>
+              {category.map((category, index) => {
+                return (
+                  <option
+                    value={category.codigo}
+                    key={index}
+                    onChange={(e) => e.target.value}
+                  >
+                    {category.Nombre}
+                  </option>
+                );
+              })}
+            </select>
+
+           <label class="m-2 p-4">Foto de perfil</label>
             <input id="foto" type="file" value={foto} onChange={(e)=>setFoto(e.target.value)}>
             </input>
        
